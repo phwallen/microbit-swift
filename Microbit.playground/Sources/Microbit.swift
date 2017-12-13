@@ -33,6 +33,23 @@ public protocol MicrobitDelegate {
     func temperature(value:Int16)
 }
 /**
+ Provide default dummy definitions for the MicrobitDelegate protocol
+ to prevent unnecessary functions being implemeted in conforming classes.
+*/
+extension MicrobitDelegate {
+    func logUpdated(_ log:[String]) {}
+    func advertisementData(url:String,namespace:Int64,instance:Int32,RSSI:Int) {}
+    func serviceAvailable(service:ServiceName) {}
+    func uartReceived(message:String) {}
+    func pinGet(pins:[UInt8:UInt8]) {}
+    func buttonPressed(button:String,action:MicrobitButtonType) {}
+    func accelerometerData(x:Int16,y:Int16,z:Int16) {}
+    func magnetometerData(x:Int16,y:Int16,z:Int16) {}
+    func compass(bearing:Int16) {}
+    func microbitEvent(type:Int16,value:Int16) {}
+    func temperature(value:Int16) {}
+}
+/**
  Services available from a micro:bit peripheral
 */
 public enum ServiceName {
@@ -127,7 +144,7 @@ public class Microbit: NSObject,CBCentralManagerDelegate,CBPeripheralDelegate {
      string buffer to hold diagnostic messages.
      Buffer holds a maximum of MAX_BUFFER_ENTRIES before oldest entry is removed
     */
-    private var log = [String]()
+    public var log = [String]()
     private let MAX_BUFFER_ENTRIES = 100
     
     /**

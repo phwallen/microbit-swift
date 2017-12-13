@@ -16,7 +16,22 @@ public protocol MicrobitUIDelegate {
     func event(register:[Int16])
     func raiseEvent(event:MicrobitEvent,value:UInt16)
 }
-
+extension MicrobitUIDelegate {
+    func startScanning() {}
+    func stopScanning() {}
+    func disconnect() {}
+    func uartSend(message:String) {}
+    func pinSetfor(read:[UInt8:Bool]) {}
+    func pinSetfor(analogue:[UInt8:Bool]) {}
+    func pinWrite(value:[UInt8:UInt8]) {}
+    func accelerometerSet(period:PeriodType){}
+    func magnetometerSet(period:PeriodType) {}
+    func temperatureSet(period:UInt16){}
+    func ledSet(matrix:[UInt8]){}
+    func ledText(message:String,scrollRate:Int16){}
+    func event(register:[Int16]){}
+    func raiseEvent(event:MicrobitEvent,value:UInt16){}
+}
 class Layout {
     enum pinType{
         case left
@@ -56,8 +71,15 @@ class Layout {
 }
 
 public class MicrobitLogView {
+    public enum LogViewSize:Int {
+        case small  = 350
+        case medium = 210
+        case large = 50
+    }
     let logView = UITextView()
-    public init(view:UIView) {
+    var viewSize:LogViewSize
+    public init(view:UIView,viewSize:LogViewSize = .large) {
+        self.viewSize = viewSize
         logView.frame = CGRect(x: 0, y:0, width:300,height:100)
         logView.backgroundColor = UIColor.lightGray
         #if os(iOS)
@@ -68,7 +90,7 @@ public class MicrobitLogView {
         
         let margins = view.layoutMarginsGuide
         
-        Layout.manager(logView,margins:margins,left:20,right:-20,top:400,bottom:-20,pinH:.both,pinV:.both)
+        Layout.manager(logView,margins:margins,left:0,right:0,top:CGFloat(viewSize.rawValue),bottom:-10,pinH:.both,pinV:.both)
     }
     
     public func updateLogView(log:[String]) {
@@ -86,13 +108,20 @@ public class MicrobitControl:NSObject{
     public var delegate:MicrobitUIDelegate?
     public init(view:UIView) {
         super.init()
+        
+        let hStackView = UIStackView()
+        hStackView.axis = .horizontal
+        hStackView.distribution = .equalSpacing
+        hStackView.spacing = 0
+        hStackView.translatesAutoresizingMaskIntoConstraints = false
+        
         let startScanButton = UIButton(type:.system)
         startScanButton.setTitle("Start Scan", for: .normal)
         startScanButton.tag = 0
         //startScanButton.backgroundColor = UIColor.blue
         startScanButton.translatesAutoresizingMaskIntoConstraints = false
         startScanButton.addTarget(self,action: #selector(MicrobitControl.buttonAction),for: .primaryActionTriggered)
-        view.addSubview(startScanButton)
+        hStackView.addArrangedSubview(startScanButton)
         
         let stopScanButton = UIButton(type:.system)
         stopScanButton.setTitle("Stop Scan",for: .normal)
@@ -100,7 +129,7 @@ public class MicrobitControl:NSObject{
         //stopScanButton.backgroundColor = UIColor.blue
         stopScanButton.translatesAutoresizingMaskIntoConstraints = false
         stopScanButton.addTarget(self,action: #selector(MicrobitControl.buttonAction),for: .primaryActionTriggered)
-        view.addSubview(stopScanButton)
+        hStackView.addArrangedSubview(stopScanButton)
         
         let disconnectButton = UIButton(type:.system)
         disconnectButton.setTitle("Disconnect",for: .normal)
@@ -108,13 +137,11 @@ public class MicrobitControl:NSObject{
         //disconnectButton.backgroundColor = UIColor.blue
         disconnectButton.translatesAutoresizingMaskIntoConstraints = false
         disconnectButton.addTarget(self,action: #selector(MicrobitControl.buttonAction),for: .primaryActionTriggered)
-        view.addSubview(disconnectButton)
-        
+        hStackView.addArrangedSubview(disconnectButton)
+        view.addSubview(hStackView)
         let margins = view.layoutMarginsGuide
         
-        Layout.manager(startScanButton,margins:margins,left:10,right:110,top:20,bottom:40,pinH:.left,pinV:.top)
-        Layout.manager(stopScanButton,margins:margins,left:130,right:230,top:20,bottom:40,pinH:.left,pinV:.top)
-        Layout.manager(disconnectButton,margins:margins,left:250,right:350,top:20,bottom:40,pinH:.left,pinV:.top)
+        Layout.manager(hStackView,margins:margins,left:0,right:250,top:20,bottom:40,pinH:.left,pinV:.top)
     }
     @objc func buttonAction(sender:UIButton) {
         switch(sender.tag) {
@@ -424,6 +451,8 @@ public class MicrobitAccelerometer {
     var yValue = UILabel()
     var zValue = UILabel()
     
+    let periodControl = UISegmentedControl(items:["1ms","2ms","5ms","10ms","20ms","80ms","160ms","640ms"])
+    
     public init(view:UIView) {
         let vStackView = UIStackView()
         vStackView.axis = .vertical
@@ -443,9 +472,7 @@ public class MicrobitAccelerometer {
         head2Label.translatesAutoresizingMaskIntoConstraints = false
         vStackView.addArrangedSubview(head2Label)
         
-        let periodControl = UISegmentedControl(items:["1ms","2ms","5ms","10ms","20ms","80ms","160ms","640ms"])
         periodControl.translatesAutoresizingMaskIntoConstraints = false
-        //periodControl.selectedSegmentIndex = 7
         periodControl.addTarget(self,action: #selector(MicrobitAccelerometer.segmentedControlAction),for: .primaryActionTriggered)
         vStackView.addArrangedSubview(periodControl)
         
@@ -492,6 +519,10 @@ public class MicrobitAccelerometer {
         yValue.text = String(y)
         zValue.text = String(z)
     }
+    public func setPeriod() {
+        periodControl.selectedSegmentIndex = 7
+        delegate?.accelerometerSet(period:.p640)
+    }
     @objc func segmentedControlAction(sender:UISegmentedControl) {
         var periodType:PeriodType
         switch sender.selectedSegmentIndex {
@@ -514,6 +545,8 @@ public class MicrobitMagnetometer {
     var xValue = UILabel()
     var yValue = UILabel()
     var zValue = UILabel()
+    
+    let periodControl = UISegmentedControl(items:["1ms","2ms","5ms","10ms","20ms","80ms","160ms","640ms"])
     
     var compassImage = UIImageView()
     var lastBearing:CGFloat = 0.0
@@ -538,9 +571,7 @@ public class MicrobitMagnetometer {
         head2Label.translatesAutoresizingMaskIntoConstraints = false
         vStackView.addArrangedSubview(head2Label)
         
-        let periodControl = UISegmentedControl(items:["1ms","2ms","5ms","10ms","20ms","80ms","160ms","640ms"])
         periodControl.translatesAutoresizingMaskIntoConstraints = false
-        //periodControl.selectedSegmentIndex = 7
         periodControl.addTarget(self,action: #selector(MicrobitAccelerometer.segmentedControlAction),for: .primaryActionTriggered)
         vStackView.addArrangedSubview(periodControl)
         
@@ -599,9 +630,12 @@ public class MicrobitMagnetometer {
         compassImage.translatesAutoresizingMaskIntoConstraints = false
         compassImage.transform = compassImage.transform.rotated(by: -1.55)
         view.addSubview(compassImage)
-        Layout.manager(compassImage,margins:margins,left:310,right:410,top:210,bottom: 310,pinH:.left,pinV:.top)
+        Layout.manager(compassImage,margins:margins,left:150,right:250,top:250,bottom: 350,pinH:.left,pinV:.top)
     }
-    
+    public func setPeriod() {
+        periodControl.selectedSegmentIndex = 7
+        delegate?.accelerometerSet(period:.p640)
+    }
     public func updateData(x:Int16,y:Int16,z:Int16) {
         xValue.text = String(x)
         yValue.text = String(y)
@@ -768,7 +802,7 @@ public class MicrobitButtons {
         hStackView.addArrangedSubview(aStackView)
         hStackView.addArrangedSubview(bStackView)
         view.addSubview(hStackView)
-        Layout.manager(hStackView,margins:margins,left:140,right:300,top:100,bottom: 200,pinH:.left,pinV:.top)
+        Layout.manager(hStackView,margins:margins,left:0,right:0,top:100,bottom: 200,pinH:.both,pinV:.top)
     }
     public func update(button:String,action:MicrobitButtonType) {
         if button == "A" {
@@ -1014,6 +1048,7 @@ public class MicrobitUIEvent:NSObject,UITextFieldDelegate {
         inputField.delegate = self
         inputField.translatesAutoresizingMaskIntoConstraints = false
         inputField.placeholder = "Enter a value between 0 and 65535"
+        inputField.keyboardType = .numbersAndPunctuation
         eventStackView.addArrangedSubview(inputField)
         
         view.addSubview(eventStackView)
