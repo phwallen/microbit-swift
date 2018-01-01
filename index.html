@@ -9,7 +9,7 @@
         
         <link rel="shortcut icon" href="./img/favicon.ico">
 
-	<title>My Docs</title>
+	<title>Micro:bit Swift Bluetooth LE</title>
 
         <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="./css/font-awesome-4.5.0.css" rel="stylesheet">
@@ -35,7 +35,7 @@
             
 
             <!-- Main title -->
-            <a class="navbar-brand" href=".">My Docs</a>
+            <a class="navbar-brand" href=".">Micro:bit Swift Bluetooth LE</a>
         </div>
 
         <!-- Expanded navigation -->
@@ -63,9 +63,40 @@
         <li class="main active"><a href="#overview">Overview</a></li>
         
     
-        <li class="main "><a href="#services">Services</a></li>
+        <li class="main "><a href="#the-microbit-playground">The Microbit Playground</a></li>
+        
+            <li><a href="#getting-started">Getting Started</a></li>
+        
+            <li><a href="#pairing">Pairing</a></li>
+        
+    
+        <li class="main "><a href="#bluetooth-services">Bluetooth Services</a></li>
         
             <li><a href="#accelerometer">Accelerometer</a></li>
+        
+            <li><a href="#button">Button</a></li>
+        
+            <li><a href="#event">Event</a></li>
+        
+            <li><a href="#led">LED</a></li>
+        
+            <li><a href="#magnetometer">Magnetometer</a></li>
+        
+            <li><a href="#io-pin">IO Pin</a></li>
+        
+            <li><a href="#temperature">Temperature</a></li>
+        
+            <li><a href="#uart">UART</a></li>
+        
+    
+        <li class="main "><a href="#beacon">Beacon</a></li>
+        
+    
+        <li class="main "><a href="#appendix-a-microbit-api">Appendix A - Microbit API</a></li>
+        
+            <li><a href="#microbitdelegate-protocol">MicrobitDelegate Protocol</a></li>
+        
+            <li><a href="#microbit-class">Microbit Class</a></li>
         
     
     </ul>
@@ -73,8 +104,428 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="overview">Overview</h1>
-<h1 id="services">Services</h1>
-<h2 id="accelerometer">Accelerometer</h2></div>
+<p>The micro:bit is a great bit of kit for hobbyists, designers, educators and of course students.</p>
+<ul>
+<li>It’s cheap. For under £13, you get a very versatile micro computer and, while I don’t condone cruelty to electronic components,  if the worst happens it won’t break the bank to replace. For many in 2016 it was even cheaper, well free, when the BBC gave one to a million school children.</li>
+<li>It’s been well designed. Based on the Nordic nRF51822 micro processor, the credit card size micro computer can be easily integrated into electronic projects taking ideas to fully working models. </li>
+<li>It’s simple to program. Using the JavaScript Blocks Editor programs can be created and transferred to the micro:bit without complicated development environments.</li>
+<li>It implements Bluetooth Low Energy (BLE). It provides an easy way of introducing BLE into projects and facilitating communication with devices like smart phones and tablets.</li>
+<li>It’s open source. With the hardware licensed under Solderpad  and the runtime software under MIT, designers are free to develop products based on the micro:bit design.</li>
+</ul>
+<p>Of course there is a plethora of devices that can do similar things to the micro:bit.  Some are specific and promote particular features of chip manufactures while others like Arduino and Raspberry pi are general purpose but may require greater complexity and expense to achieve a requirement easy served  by the micro:bit.</p>
+<p>One of the strengths of the micro:bit is it's implementation of BLE. Martin Woolley, the principal architect for the micro:bit bluetooth implementation, has produced some very interesting articles: </p>
+<ul>
+<li><a href="http://blog.bluetooth.com/bbc-microbit-inspiring-generation-get-creative-coding">Bluetooth and the micro:bit</a></li>
+<li><a href="http://blog.bluetooth.com/bluetooth-bbc-microbit">Designing the Profile for the micro:bit</a></li>
+<li><a href="http://blog.bluetooth.com/developing-applications-bbc-microbit">Developing Applications For The BBC Microbit</a> </li>
+</ul>
+<p>Martin has written a number of applications for the Android Operating system that demonstrate how the micro:bit can be controlled using a smart phone. There are, however, few examples, at the time of writing, on developing applications for Apple devices such as iPhones and iPads. Apart from the fact there are lots of iPhones and iPads waiting to control micro:bits, there are a few other reasons for writing code for iOS devices: </p>
+<ul>
+<li>IOS devices do not lend themselves to be hard-wired to external hardware via a USB connection. Apple view this type of interface as an external accessory which would have to be licensed under the Apple MFi program. This is hardly appropriate for ad hoc experimentation.  This is where BLE comes in. Apple does a good job supporting Bluetooth through it’s Core Bluetooth API and the micro:bit does an equally good job implementing  the bluetooth stack which allows  iPads and iPhones to communicate with the micro:bit wirelessly. What’s more,  Core Bluetooth is also supported on macOS,  tvOS and watchOS, meaning your micro:bit can communicate with even more device you might own.</li>
+<li>A few years ago, writing code to run on your own iPad or iPhone would have meant you signing-up for the apple developer program, but now if apps are only for devices you own all you need is an Apple ID which, if you are an apple user, you probably already have (if you want to distribute your code through the App store , you still need to join the developer program ,currently $99 a year). This means if you own an iPad, iPhone, iPod, mac, apple TV or apple watch you can write an app to communicate with your micro:bit project.</li>
+<li>If writing apps all seems a bit over the top (all you want is to try out  an idea), then, since 2016 there is another way of controlling a micro:bit from an iPad. It’s called Swift Playgrounds and it’s a free app from apple. It’s primary purpose is to teach coding, specifically  using the Swift programming language. This done via an electronic publication known as a ‘playground book’. Students can download these playgrounds on different coding topics and interact with them in a fun way to learn computer programming. You can also use Swift Playgrounds to write code from scratch, perhaps to try some thing out, like controlling your micro:bit.</li>
+</ul>
+<p>This project describes an Application Programming Interface (API), that can be used to develop applications for Apple operating systems, that interact with the micro:bit.</p>
+<p>The API is written in the Swift programming language and exploits the Apple Core Bluetooth framework. It's easily installed in any Xcode project by simply copying <a href="https://github.com/phwallen/microbit-swift/blob/master/Microbit/Microbit/Microbit.swift">Microbit.swift</a> into an Xcode project.</p>
+<p>For further information about Microbit.swift see: <strong>Appendix A - Microbit API</strong></p>
+<h1 id="the-microbit-playground">The Microbit Playground</h1>
+<p>To demonstrate the API there is a <a href="https://github.com/phwallen/microbit-swift/blob/master/Microbit.playground.zip">micro:bit Swift Playground</a>.</p>
+<p>Usually when developing applications, you would use Xcode's powerful user interface building facilities, however, these are not available to Playgrounds so it is necessary to build user interfaces programmatically. The Micro:bit Playground includes the necessary view controllers and custom views to interact with the micro:bit API.</p>
+<p>The view controllers are contained in a single file: <a href="https://github.com/phwallen/microbit-swift/blob/master/Microbit/Microbit/MicrobitUIController.swift">MicrobitUIController</a> and the custom views are in the file: <a href="https://github.com/phwallen/microbit-swift/blob/master/Microbit/Microbit/MicrobitUI.swift">MicrobitUI.swift</a>.     </p>
+<h2 id="getting-started">Getting Started</h2>
+<p>To use the micro:bit Swift Playground you need to do a few things:</p>
+<ul>
+<li>Download the micro:bit playground.</li>
+<li>Program the micro:bit.</li>
+<li>Edit the micro:bit playground.</li>
+<li>Test that iPad and micro:bit are talking to each other.</li>
+</ul>
+<h3 id="download-the-microbit-playground">Download the micro:bit playground.</h3>
+<p>The micro:bit playground has been designed to run on any iPad that has <a href="https://www.apple.com/uk/swift/playgrounds/">Swift Playgrounds</a> installed. You can install Swift Playgrounds for free by downloading it from the App Store.</p>
+<p>Download <a href="https://github.com/phwallen/microbit-swift">Microbit.playground</a> on an iPad that supports Swift Playgrounds. Tap on: <strong>Microbit.playground.zip</strong> to open, and, tap the <strong>Download</strong> button.</p>
+<p>The Microbit.playground will be downloaded to the iPad. Providing Swift playgrounds is installed, you will see and option to <strong>Open in "Playgrounds"</strong>.</p>
+<p>Open the <strong>Microbit</strong> playground from the MyPlaygrounds screen. Test it works by tapping <strong>Run My Code</strong> at the bottom of the screen. You should see a screen that looks a bit like this:</p>
+<p><img alt="microbit_playground_menu" src="./images/microbit_playground_menu.png" /></p>
+<p>Select the <strong>Log</strong> option and check for the message "Bluetooth is available". If you don't see this message, check that Bluetooth is turned on in settings. </p>
+<h3 id="program-the-microbit">Program the micro:bit</h3>
+<p>You will need to  write a simple program to test the playground, if you are new to using the micro:bit read: <a href="http://microbit.org/guide/quick/">Using micro:bit in 5 easy steps</a>. The easiest way to write a program is with the online <a href="https://makecode.microbit.org">Javascript Blocks Editor</a>.</p>
+<p>By default the editor does not include the Bluetooth package, so you you will need to add it using the <strong>Add Package</strong> option in the Advanced section of the packages list. For further information on how this is done <a href="https://support.microbit.org/support/solutions/articles/19000062330-using-the-micro-bit-bluetooth-low-energy-uart-serial-over-bluetooth-">see this article</a>.</p>
+<p>As a test, write a program that implements the Bluetooth Button Service. Arrange the blocks as shown in the following:
+<img alt="makecode_Button" src="./images/makecode_Button.png" /><br />
+To implement the button service, simply add the <strong>bluetooth button service</strong> block to the <strong>on start</strong> block. Also. add some code to indicate the 'state' of the program - 'S' program has started, 'C' program is connected to the iPad, 'D' the program has disconnected from the iPad.</p>
+<p>There is one more thing to do before downloading the program to the micro:bit. The pairing option determines how the micro:bit will pair with the iPad. For details about the various pairing option see the section on <strong>Pairing</strong>. For performing this test, turn off pairing. Select the cog in the top right of the editor and then select <strong>Project Settings</strong>. Now select - <strong>No Pairing Required: Anyone can connect via Bluetooth.</strong></p>
+<p>You can now download the program to the micro:bit.</p>
+<h3 id="edit-the-microbit-playground">Edit the micro:bit playground</h3>
+<p>The micro:bit playground as supplied is very simple. It:</p>
+<ul>
+<li>initialises a MicrobitUIController</li>
+<li>initialises the MicrobitUIController.microbit property using the Microbit class.</li>
+<li>passes the view controller to playground support for display.</li>
+</ul>
+<p>The Microbit initialiser requires a parameter which is the name the micro:bit advertises. Currently this is in the form of <strong>BBC micro:bit [identifier]</strong>. The identifier will vary between micro:bits. One way to find out the name of your micro:bit is to:</p>
+<ul>
+<li>run the micro:bit playground.</li>
+<li>select the <strong>Log</strong> option.</li>
+<li>press the <strong>Start Scan</strong> button.</li>
+<li>look for a log message that says <strong>Possible device detected:</strong>.</li>
+<li>press the <strong>Stop Scan</strong> button.</li>
+</ul>
+<p>Providing the micro:bit is running a bluetooth program you should see the device name e.g.<br />
+<strong>BBC micro:bit [tizip]</strong>. You can now edit the playground to set the correct name e.g.</p>
+<pre><code>vc.microbit = Microbit(&quot;BBC micro:bit [tizip]&quot;)
+</code></pre>
+
+<h3 id="test-the-button-service">Test the button service</h3>
+<ul>
+<li>power the micro:bit and check that it displays <strong>S</strong></li>
+<li>run the micro:bit playground.</li>
+<li>select the <strong>Buttons</strong> option.</li>
+<li>press the <strong>Start Scan</strong> button.</li>
+</ul>
+<p>The log at the bottom of the playground screen should show a number of messages, including messages that Button state characteristics have been found and the serial number and firmware revision. Also the micro:bit should show a <strong>C</strong> on the led matrix.</p>
+<p>You can now try pressing the A button on the micro:bit and see if the indicator on the playground changes from black to red. Release the button and the indicator should return to black. Now press the button and hold it down for more than 2 seconds. The indicator should change from red to blue. Repeat the process using button B. If that works you have successfully set up your Swift playground to communicate with a micro:bit.</p>
+<p>You should be able to disconnect the micro:bit by pressing <strong>Disconnect</strong>. Check that the micro:bit now displays a <strong>D</strong>. Try connecting again by pressing the <strong>Start Scan</strong>. Disconnection and reconnection may cause the micro:bit program to fail particularly if a lot is running on the micro:bit e.g. managing a number of bluetooth services. If the communication has stoped, or, perhaps random LEDs are on, press the reset button on the micro:bit so that it shows <strong>S</strong> and press <strong>Start Scan</strong> to reconnect.</p>
+<h2 id="pairing">Pairing</h2>
+<p>Bluetooth pairing creates a trusted relationship between two devices and allows them to exchange encrypted data. The pairing procedure does add a level of complication that might not be necessary and, unfortunately, each time the micro:bit is reloaded with a program over USB, the pairing procedure must be repeated. Flashing the micro:bit 'over the air' maintains pairing details so avoids repeating the pairing procedure. To flash the micro:bit over the air you need the free micro:bit app available from the Apple app store.</p>
+<p>The Javascript Blocks Editor allows you to set one of three types of pairing when compiling a bluetooth program:</p>
+<ul>
+<li>No Pairing Required: Anyone can connect via Bluetooth.</li>
+<li>JustWorks pairing (default): Pairing is automatic once the pairing is initiated.</li>
+<li>Passkey pairing: Pairing requires 6 digit key to pair.</li>
+</ul>
+<p>These options are set in the Project Setting menu accessed by pressing the cog icon at the top right of the Javascript Blocks Editor.</p>
+<p>For for general information about pairing the micro:bit with devices such as smart phones and tablets see: <a href="https://makecode.microbit.org/reference/bluetooth/bluetooth-pairing">Bluetooth Pairing</a>.</p>
+<p><strong>Note:</strong> The official micro:bit pairing documentation refers to the need for an application such as 'nRF Master Control Panel' to trigger pairing when using an IOS device. This is not necessary if using the Microbit class described in this document. Initialisation of a Microbit object causes the Event Service - client requirements characteristic to be written, forcing the pairing to be triggered.  </p>
+<p>The following is specific to pairing the micro:bit playground.</p>
+<h3 id="no-pairing">No Pairing</h3>
+<p>This option is ideal for testing, particularly if you need to repeatedly download code to the micro:bit. All you need to do is ensure the the Microbit class initialiser is called with the correct name of the micro:bit. See <strong>Edit the micro:bit playground</strong> above to find out how to find the name of your micro:bit.</p>
+<h3 id="justworks-pairing">JustWorks pairing</h3>
+<p>This option is the default if using the Javascript Blocks Editor. It provides security without the need for a passcode, but it does mean the following process must be repeated each time you download code to the micro:bit.
+To use 'JustWorks pairing' follow these steps:</p>
+<ul>
+<li>Select the JustWorks option in Project Settings  before downloading your code to the micro:bit.</li>
+<li>Ensure the iPad has ‘forgotten’ the micro:bit - Go to Settings-Bluetooth and check MY DEVICES. If the BBC micro:bit is listed, select the information icon and select “Forget This Device” </li>
+<li>Call the Microbit class initialiser with the name of the micro:bit the same way as described in the section on 'NO Pairing'.</li>
+<li>Start the pairing process on the micro:bit (hold buttons A and B down while pressing and releasing the reset button). The micro:bit will display a pattern on the LED matrix.</li>
+<li>Run the Micro:bit Playground and press <strong>Start Scan</strong>.</li>
+<li>Reply to the alert on the iPad. The micro:bit will show a ✅ to indicate it has been paired.</li>
+<li>Reset the micro:bit.</li>
+<li>Once the micro:bit has been paired it will use an identifier without the 5 character extension i.e. the characters between the '[]', so remove the extension (including the square brackets) from the the Microbit initialiser call.<br />
+e.g. </li>
+</ul>
+<pre><code>vc.microbit = Microbit(&quot;BBC micro:bit&quot;)
+</code></pre>
+
+<ul>
+<li>The micro:bit is now paired with the iPad and should connect each time you start a scan.</li>
+</ul>
+<h3 id="passkey-pairing">Passkey Pairing</h3>
+<p>Passkey pairing requires a 6 digit random passkey, displayed on the micro:bit,  to be entered on the iPad. To use Passkey pairing follow these steps.</p>
+<ul>
+<li>Select the Passkey option in Project Settings before downloading to the micro:bit.</li>
+<li>Ensure the iPad has ‘forgotten’ the micro:bit - Go to Settings-Bluetooth and check MY DEVICES. If the BBC micro:bit is listed, select the information icon and select “Forget This Device”</li>
+<li>Call the Microbit class initialiser with the name of the micro:bit the same way as described in the section on 'NO Pairing'. </li>
+<li>Start the pairing process on the micro:bit (hold buttons A and B down while pressing and releasing the reset button). The micro:bit will display a pattern on the LED matrix.</li>
+<li>Run the Micro:bit Playground, select the Log option from the menu and press <strong>Start Scan</strong>.</li>
+<li>The micro:bit will show an ⬅︎. Press button A and the micro:bit will scroll a 6 digit passkey that should be entered into the iPad when prompted.</li>
+<li>The micro:bit will show a ✅ to indicate it has been paired</li>
+<li>Reset the micro:bit.</li>
+<li>Once the micro:bit has been paired it will use an identifier without the 5 character extension i.e. the characters between the '[]', so remove the extension (including the square brackets) from the the Microbit initialiser call.<br />
+e.g.</li>
+</ul>
+<pre><code>vc.microbit = Microbit(&quot;BBC micro:bit&quot;)
+</code></pre>
+
+<ul>
+<li>The micro:bit is now paired with the iPad and should connect each time you start a scan.</li>
+</ul>
+<h1 id="bluetooth-services">Bluetooth Services</h1>
+<p>The Micro:bit Playground demonstrates the various Services available on the micro:bit.</p>
+<p>For further information regarding the Bluetooth Services available to the micro:bit see <a href="https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html">The micro:bit GATT profile</a></p>
+<h2 id="accelerometer">Accelerometer</h2>
+<p>For information on programming the micro:bit to use the accelerometer service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-accelerometer-service">accelerometer reference</a>.</p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Accelerometer</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit</li>
+<li>Select the frequency accelerometer data is reported e.g. intervals of 640 milliseconds</li>
+</ul>
+<p>The micro:bit reports the acceleration (milli g-force) in three directions:</p>
+<ul>
+<li>x:acceleration in left and right direction. Holding the micro:bit edge connector towards you, if the value is 0, the micro:bit is horizontal. Tilting to the left gives a positive value, tilting to the right gives a negative value. </li>
+<li>y:acceleration in the forward and backward direction. Holding the micro:bit edge connector towards you, if the value is 0, the micro:bit is horizontal. Tilting towards you gives a positive value, tilting away gives a negative value.</li>
+<li>z:acceleration in up and down direction. If the LED matrix is facing upwards gives a negative number. If the LED matrix is facing down gives a positive number. If the value is 0, the micro:bit is vertical.</li>
+</ul>
+<h2 id="button">Button</h2>
+<p>For information on programming the micro:bit to use the button service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-button-service">Button Service</a>. </p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Buttons</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit</li>
+</ul>
+<p>The indicators change on the Playground depending on which button is pressed and how long it's pressed for.</p>
+<h2 id="event">Event</h2>
+<p>Unlike the other micro:bit services, the Event service is enabled by default when you include the Bluetooth package, you do not have to explicitly enable the service . The service extends the micro:bit message bus over Bluetooth (<a href="https://lancaster-university.github.io/microbit-docs/concepts/">see the micro:bit runtime</a> for further information about the micro:bit message bus).</p>
+<p>The service allows the Playground (or any smart phone or tablet of course) to interact with a micro:bit program and the micro:bit to communicate with the Playground. To demonstrate this, the Playground has been setup to respond to a specific set of user defined Event Service IDs (9010, 9011, 9012, 9013, 9014). You are free to define your own Events IDs for your own projects. The Playground also defines the following Events it can raise on the micro:bit message bus:</p>
+<ul>
+<li>MES_DEVICE_INFO_ID</li>
+<li>MES_SIGNAL_STRENGTH_ID</li>
+<li>MES_DPAD_CONTROLLER_ID</li>
+<li>MES_BROADCAST_GENERAL_ID</li>
+</ul>
+<p>The following micro:bit program demonstrates the Event service as implemented by the Micro:bit Playground:</p>
+<p><img alt="makecode-Events" src="./images/makecode-Events.png" /></p>
+<p>To demonstrate micro:bit Events:</p>
+<ul>
+<li>Start the Micro:bit Playground and select the <strong>Events</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>The micro:bit program counts from -60 raising event 9010 on the micro:bit message bus every second. The Bluetooth Event Service will transmit the event and its corresponding value to the Playground.</p>
+<p>If you press button A on the micro:bit, it will raise event 9011 with the current contents of 'value1', if you press button B, event 9011 will be raised with an value of 0.</p>
+<p>The Playground allows you to select one of 4 events the will be transmitted to the micro:bit message bus. If you select MES_DPAD_CONTROLLER_ID and enter a number between 0 and 65535 it will displayed on the micro:bit LED matrix.</p>
+<h2 id="led">LED</h2>
+<p>For information on programming the micro:bit to use the LED service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-led-service">LED Service</a>.      </p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>LED</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>The matrix on the left-hand side of the Playground depicts the micro:bit LED matrix with each dot representing one of the 25 LEDs. If you press one of the dots the corresponding LED should light.</p>
+<p>You can also enter up to 20 characters of text which will be scrolled across the LED matrix. The speed of the scroll can be set as:</p>
+<ul>
+<li>Slow (500 millisecond wait between showing each character).</li>
+<li>Normal (100 millisecond wait between showing each character).</li>
+<li>Fast   (10 millisecond wait between showing each character).</li>
+</ul>
+<h2 id="magnetometer">Magnetometer</h2>
+<p>For information on programming the micro:bit to use the Magnetometer service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-magnetometer-service">Magnetometer Service</a>.</p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Magnetometer</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit. </li>
+</ul>
+<p>When you connect to the micro:bit for the first time after reloading a program, the micro:bit will request that you calibrate the magnetometer see <a href="https://makecode.microbit.org/reference/input/calibrate-compass">calibrate compass</a>.</p>
+<p>The playground reports magnetometer data at specified intervals:</p>
+<ul>
+<li>X is the magnetic field strength in the direction of magnetic north</li>
+<li>Y is the magnetic field strength in the direction of magnetic east i.e. 90 degrees from magnetic north</li>
+<li>Z is the magnetic field strength vertically down</li>
+</ul>
+<p>The playground also reports the compass bearing in degrees from North.</p>
+<h2 id="io-pin">IO Pin</h2>
+<p>For information on programming the micro:bit to use the IO Pin service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-io-pin-service">IO Pin service</a>.</p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Pin IO</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>The Playground User Interface represents I/O pins 0 to 9 on the edge connector of the micro:bit. Each pin can be switched on (3 volts) by pressing the black dot or off (0 volts) by pressing the red dot.</p>
+<p>Pins 0 - 3 can be switched to Analogue (A) or Digital (D) by pressing the yellow buttons. In analogue mode the pin voltages can be set by moving the corresponding sliders.</p>
+<p>The voltage on the pins can be Written (W) or Read (R) by pressing the grey button. </p>
+<h2 id="temperature">Temperature</h2>
+<p>For information on programming the micro:bit to use the Temperature service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-temperature-service">Temperature service</a>.</p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Temperature</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>The playground reports the temperature of the micro:bit processor in centigrade. The interval the temperature is reported can be adjusted from 100 milliseconds to 1 minute. An indicator flashes to show a temperature reading has been taken. </p>
+<h2 id="uart">UART</h2>
+<p>For information on using the UART service see: <a href="https://makecode.microbit.org/reference/bluetooth/start-uart-service">UART service</a>.</p>
+<p>The following micro:bit program can be used with the playground to demonstrate the UART service: </p>
+<p><img alt="makecode_UART" src="./images/makecode_UART.png" /></p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>UART</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>Press button A on the micro:bit and see the text ('Hello') sent to the playground.</p>
+<p>Type some text in the UART input field followed by '$' and press return on the iPad. The text will be transmitted to the micro:bit and scrolled across the LED matrix.</p>
+<h1 id="beacon">Beacon</h1>
+<p>Beacons are not Bluetooth services, they utilise a bluetooth peripherals ability to advertise services. Beacons advertise small amounts of information, allowing devices like smartphones to detect their proximity to the beacon. There are various beacon message formats, which define the way bluetooth advertising packets are used. The micro:bit uses the<br />
+<a href="https://lancaster-university.github.io/microbit-docs/ble/eddystone/">Eddystone format</a>, whereas Apple operating systems use the iBeacon format. </p>
+<p>The full potential of beacon technology is exploited on Apple platforms using the 'Core Location' API which is not supported by the micro:bit, however, it's still possible to demonstrate beacons using the micro:bit playground and Eddystone protocols.</p>
+<p>For programming information using Beacons see :
+<a href="https://makecode.microbit.org/reference/bluetooth/advertise-url">Advertise URL</a> and </p>
+<p><a href="https://makecode.microbit.org/reference/bluetooth/advertise-uid">Advertise UID</a>.</p>
+<p>The following micro:bit program broadcasts a UID every second. Each time the UID is broadcast it increments the instance element. This is necessary because, by default, the Apple software amalgamates similar messages, so if the UID remains constant, the playground would not show each broadcast message. </p>
+<p><img alt="makecode-Beacon" src="./images/makecode-Beacon.png" /></p>
+<p>To demonstrate the program:</p>
+<ul>
+<li>Start the Micro:bit Playground  and select the <strong>Beacon</strong> option.</li>
+<li>Press <strong>Start Scan</strong> to connect to the micro:bit.</li>
+</ul>
+<p>The playground will show micro:bit advertisement data and the received signal strength indication (RSSI). The RSSI can be used as a crude indication of the proximity to the micro:bit.</p>
+<h1 id="appendix-a-microbit-api">Appendix A - Microbit API</h1>
+<p>The Microbit API is contained in the Microbit.swift file which is simply added to an Xcode project. The file contains:</p>
+<ul>
+<li>the <strong>MicrobitDelegate</strong>  protocol</li>
+<li>the <strong>Microbit</strong> class</li>
+</ul>
+<h2 id="microbitdelegate-protocol">MicrobitDelegate Protocol</h2>
+<p>Classes implementing the Microbit API should conform to the MicrobitDelegate protocol. Dummy implementations of the protocol functions are included in the Microbit.swift file eliminating the need to implement functions that are not required.</p>
+<p>The following delegate functions are available:</p>
+<ul>
+<li>logUpdated(_ log:[String]). Called when a log message is added to the microbit log buffer. Parameter:<ul>
+<li><strong>log</strong>  the log buffer. </li>
+</ul>
+</li>
+<li>advertisementData(url:String,namespace:Int64,instance:Int32,RSSI:Int). Called when the bluetooth central manager reads advertisement data from the micro:bit. Parameters:<ul>
+<li><strong>url</strong> the string specified by the micro:bit advertise url function.</li>
+<li><strong>namespace</strong> the integer specified by the micro:bit advertise UID namespace.</li>
+<li><strong>instance</strong> the integer specified by the micro:bit advertise UID instance.</li>
+<li><strong>RSSI</strong> the received signal strength indication variable of the advertisement.   </li>
+</ul>
+</li>
+<li>serviceAvailable(service:ServiceName). Called when a micro:bit characteristic is discovered for a given service. Parameter:<ul>
+<li><strong>service</strong> the name of Service as specified by the ServiceName enum. </li>
+</ul>
+</li>
+<li>uartReceived(message:String). Called when the UART TX characteristic is updated. Parameter:<ul>
+<li><strong>message</strong> the micro:bit uart write string.</li>
+</ul>
+</li>
+<li>pinGet(pins:[UInt8:UInt8]). Called when one or more micro:bit pins have changed their value. Parameter:<ul>
+<li><strong>pins</strong> dictionary of pin value pairs.</li>
+</ul>
+</li>
+<li>buttonPressed(button:String,action:MicrobitButtonType). Called when the state of one of the micro:bit buttons changes. Parameters:<ul>
+<li><strong>button</strong> button 'A' or 'B'</li>
+<li><strong>action</strong> button state as specified by the MicrobitButtonType enum </li>
+</ul>
+</li>
+<li>accelerometerData(x:Int16,y:Int16,z:Int16). Called when the accelerometer data characteristic is updated. Parameters:<ul>
+<li><strong>x</strong> acceleration in the 'x' direction.</li>
+<li><strong>y</strong> acceleration in the 'y' direction.</li>
+<li><strong>z</strong> acceleration in the 'z' direction.</li>
+</ul>
+</li>
+<li>magnetometerData(x:Int16,y:Int16,z:Int16). Called when the magnetometer data characteristic is updated. Parameters:<ul>
+<li><strong>x</strong> magnetic field strength in the direction of magnetic north.</li>
+<li><strong>y</strong> magnetic field strength in the direction of magnetic east.</li>
+<li><strong>z</strong> magnetic field strength vertically down.</li>
+</ul>
+</li>
+<li>compass(bearing:Int16). Called when the magnetometer compass bearing characteristic is updated. Parameter:<ul>
+<li><strong>bearing</strong> compass bearing from north in degrees.</li>
+</ul>
+</li>
+<li>microbitEvent(type:Int16,value:Int16). Called when a registered event is raised on the micro:bit. Parameter:<ul>
+<li><strong>type</strong> event ID</li>
+<li><strong>value</strong> integer value associated with the event.</li>
+</ul>
+</li>
+<li>temperature(value:Int16). Called when the temperature is reported. Parameter:<ul>
+<li><strong>value</strong> temperature in centigrade.</li>
+</ul>
+</li>
+</ul>
+<h2 id="microbit-class">Microbit Class</h2>
+<p>The Microbit class forms the entire API. It should be initialised only once. </p>
+<h3 id="initialiser">Initialiser</h3>
+<p>init(_ deviceName:String)</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>deviceName</strong> Name of the micro:bit being searched for, or, the name of the micro:bit that should be connected.</li>
+</ul>
+<p>example:</p>
+<pre><code>let microbit = Microbit(&quot;BBC micro:bit [tizip]&quot;)
+</code></pre>
+
+<h3 id="startscanning">startScanning</h3>
+<pre><code>func startScanning()
+</code></pre>
+
+<h3 id="stopscanning">stopScanning</h3>
+<pre><code>func stopScanning()
+</code></pre>
+
+<h3 id="disconnect">disconnect</h3>
+<pre><code>func disconnect()
+</code></pre>
+
+<h3 id="ledtext">ledText</h3>
+<pre><code>func ledText(message:String,scrollRate:Int16)
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li><strong>message</strong>: string to be scrolled across the micro:bit LED matrix</li>
+<li><strong>scrollRate</strong>: wait in milliseconds between showing each character</li>
+</ul>
+<h3 id="ledwrite">ledWrite</h3>
+<pre><code>func ledWrite(matrix:[UInt8])
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>matrix</strong>: array of 5 bytes where the first 5 least significant bits represent a row of LEDs</li>
+</ul>
+<h3 id="uartsend">uartSend</h3>
+<pre><code>func uartSend(message:String)
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>message</strong>: string to be sent to the micro:bit</li>
+</ul>
+<h3 id="pinconfigure">pinConfigure</h3>
+<pre><code>func pinConfigure(analougePins:[UInt8:Bool])
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>analoguePins</strong>:dictionary where keys are pin numbers and values are true if pin is analogue or false if pin is digital. Only pins 0, 1, 2, 3, 4 and 10 can be configured for analogue read or write. If other pins are configured they will be ignored.</li>
+</ul>
+<pre><code>func pinConfigure(readPins:[UInt8:Bool])
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>readPins</strong>:dictionary where keys are pin numbers and values are true if pin is read or false if pin is write. Pins 0 - 18 are valid.</li>
+</ul>
+<h3 id="pinset">pinSet</h3>
+<pre><code>func pinSet(pinValues:[UInt8:UInt8])
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>pinValues</strong>:dictionary where keys are pin numbers and values represent a variable voltage if pin is configured as analogue, or, 0: (set pin LOW) 1: (set pin HIGH) if pin is configured as digital.</li>
+</ul>
+<h3 id="accelerometer_1">accelerometer</h3>
+<pre><code>func accelerometer(period:PeriodType)
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>period</strong>: interval accelerometer data is reported. Valid PeriodType values are 1,2,5,10,20,80,160,640 milliseconds. </li>
+</ul>
+<h3 id="magnetometer_1">magnetometer</h3>
+<pre><code>func magnetometer(period:PeriodType)
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>period</strong>: interval magnetometer data is reported. Valid PeriodType values are 1,2,5,10,20,80,160,640 milliseconds.</li>
+</ul>
+<h3 id="temperature_1">temperature</h3>
+<pre><code>func temperature(period:UInt16)
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>period</strong>: interval temperature is reported in milliseconds.</li>
+</ul>
+<h3 id="raiseevent">raiseEvent</h3>
+<pre><code>func raiseEvent(event:MicrobitEvent,value:UInt16
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li><strong>event</strong>: an event that can be handled by the micro:bit.</li>
+<li><strong>value</strong>: a value associated with the event.</li>
+</ul>
+<h3 id="registerevents">registerEvents</h3>
+<pre><code>func registerEvents(events:[Int16])
+</code></pre>
+
+<p>Parameter:</p>
+<ul>
+<li><strong>events</strong>: an array of integers representing the events raised on the micro:bit that will be notified to the connected device. Note: event 9010 is automatically registered when the client requirements characteristic is discovered. This is done to force a pairing request. </li>
+</ul></div>
             
         </div>
 
@@ -121,5 +572,5 @@
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2017-12-15 14:54:40.377928
+Build Date UTC : 2018-01-01 12:10:32.159874
 -->
