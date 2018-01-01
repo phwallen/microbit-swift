@@ -15,14 +15,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Test the view controllers used by the Microbit Playground.
+        // This application does not use storyboards.
+        // It's designed to simulate the Microbit Playground by setting the rootViewController
+        // to an instance of MIcrobitUIController
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        //window?.rootViewController = UINavigationController(rootViewController: MicrobitUIController())
+        
         let microbitUIController = MicrobitUIController()
+        
         //microbitUIController.microbit = Microbit("BBC Microbit")
         microbitUIController.microbit = Microbit("BBC micro:bit [tizip]")
+        
         window?.rootViewController = microbitUIController
          
         return true

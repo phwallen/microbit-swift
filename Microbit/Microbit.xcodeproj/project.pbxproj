@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1B43F8071FA33958002EB52E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43F8061FA33958002EB52E /* AppDelegate.swift */; };
-		1B43F8091FA33958002EB52E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43F8081FA33958002EB52E /* ViewController.swift */; };
 		1B43F80C1FA33958002EB52E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B43F80A1FA33958002EB52E /* Main.storyboard */; };
 		1B43F80E1FA33958002EB52E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B43F80D1FA33958002EB52E /* Assets.xcassets */; };
 		1B43F8111FA33958002EB52E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B43F80F1FA33958002EB52E /* LaunchScreen.storyboard */; };
@@ -21,7 +20,6 @@
 		1B02F2891FB0FA40005E32D7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1B43F8031FA33958002EB52E /* Microbit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Microbit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B43F8061FA33958002EB52E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1B43F8081FA33958002EB52E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1B43F80B1FA33958002EB52E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1B43F80D1FA33958002EB52E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B43F8101FA33958002EB52E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,15 +60,14 @@
 			isa = PBXGroup;
 			children = (
 				1B43F8061FA33958002EB52E /* AppDelegate.swift */,
-				1B43F8081FA33958002EB52E /* ViewController.swift */,
-				1B43F80A1FA33958002EB52E /* Main.storyboard */,
-				1B43F80D1FA33958002EB52E /* Assets.xcassets */,
+				1BD69CA81FC6F63400C95A32 /* Microbit.swift */,
+				1BCF12901FDEB62100F608F8 /* MicrobitUIController.swift */,
 				1BBF744F1FC6E9790009B385 /* MicrobitUI.swift */,
+				1B43F80A1FA33958002EB52E /* Main.storyboard */,
 				1B43F80F1FA33958002EB52E /* LaunchScreen.storyboard */,
 				1B43F8121FA33958002EB52E /* Info.plist */,
-				1BD69CA81FC6F63400C95A32 /* Microbit.swift */,
+				1B43F80D1FA33958002EB52E /* Assets.xcassets */,
 				1B02F2891FB0FA40005E32D7 /* README.md */,
-				1BCF12901FDEB62100F608F8 /* MicrobitUIController.swift */,
 			);
 			path = Microbit;
 			sourceTree = "<group>";
@@ -148,7 +145,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BD69CA91FC6F63400C95A32 /* Microbit.swift in Sources */,
-				1B43F8091FA33958002EB52E /* ViewController.swift in Sources */,
 				1BCF12911FDEB62100F608F8 /* MicrobitUIController.swift in Sources */,
 				1BBF74501FC6E9790009B385 /* MicrobitUI.swift in Sources */,
 				1B43F8071FA33958002EB52E /* AppDelegate.swift in Sources */,
